@@ -31,6 +31,7 @@ public class RateControl {
 		return (Collection<Tarifa>) listTarifas;
 	}
 	
+	
 	//Para poder mostrar un elemento en especifico de la lista
 	@GetMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)

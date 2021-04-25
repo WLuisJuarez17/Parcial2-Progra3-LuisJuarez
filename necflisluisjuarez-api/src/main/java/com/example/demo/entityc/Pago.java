@@ -24,6 +24,7 @@ public class Pago {
 	private Double cardnum;
 	@Column(name = "estado")
 	private String state;
+	
 	public Long getId() {
 		return id;
 	}

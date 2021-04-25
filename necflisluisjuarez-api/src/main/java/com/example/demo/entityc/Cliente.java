@@ -26,6 +26,7 @@ public class Cliente {
 	@Column(name = "fecha_de_creacion")
 	private String cdate;
 	
+	
 	public Long getId() {
 		return id;
 	}

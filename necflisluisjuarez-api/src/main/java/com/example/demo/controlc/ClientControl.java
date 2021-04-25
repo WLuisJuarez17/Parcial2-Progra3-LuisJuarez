@@ -25,6 +25,7 @@ public class ClientControl {
 	@Autowired
 	ClientRepository repository;
 	
+	
 	//Para poder mostrar la lista
 	@GetMapping
 	@ResponseStatus(code = HttpStatus.OK)

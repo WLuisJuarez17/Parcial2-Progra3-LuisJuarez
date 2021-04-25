@@ -32,6 +32,7 @@ public class PayControl {
 		return (Collection<Pago>) listPagos;
 	}
 	
+	
 	//Para poder mostrar un elemento en especifico de la lista
 	@GetMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)

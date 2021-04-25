@@ -24,6 +24,7 @@ public class Tarifa {
 	private Double price;
 	@Column(name = "fecha_de_creacion")
 	private String cdate;
+	
 	public Long getId() {
 		return id;
 	}
