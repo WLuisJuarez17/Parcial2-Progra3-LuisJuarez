@@ -1,10 +1,6 @@
 package com.example.demo.controlc;
 import java.util.Collection;
-
-
-
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-
 import com.example.demo.entityc.Tarifa;
 import com.example.demo.repositoryc.RateRepository;
 
+//Se crea el controlador
 @RestController
 @RequestMapping(value = "tarifas")
 public class RateControl {
@@ -28,51 +23,56 @@ public class RateControl {
 	@Autowired
 	RateRepository repository;
 	
+	//Para poder mostrar la lista
 	@GetMapping
 	@ResponseStatus(code = HttpStatus.OK)
-	public Collection<Tarifa> getListaTarifas(){
-		 Iterable<Tarifa> listaTarifas = repository.findAll();
-		return (Collection<Tarifa>) listaTarifas;
+	public Collection<Tarifa> getListTarifas(){
+		 Iterable<Tarifa> listTarifas = repository.findAll();
+		return (Collection<Tarifa>) listTarifas;
 	}
 	
+	//Para poder mostrar un elemento en especifico de la lista
 	@GetMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public Tarifa getTarifa(@PathVariable(name = "id") Long id) {
+	public Tarifa getOneTarifa(@PathVariable(name = "id") Long id) {
 		Optional<Tarifa> tarifa = repository.findById(id);
-		Tarifa result = null;
+		Tarifa last = null;
 		if(tarifa.isPresent()) {
-			result = tarifa.get();
+			last = tarifa.get();
 		}
-		return result;
+		return last;
 	}
 	
+	//Para crear un nuevo elemento en la lista
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Tarifa createTarifa(@RequestBody Tarifa tarifa) {
-		Tarifa nuevoTarifa = repository.save(tarifa);
-		return nuevoTarifa;
+	public Tarifa addTarifa(@RequestBody Tarifa tarifa) {
+		Tarifa newTarifa = repository.save(tarifa);
+		return newTarifa;
 	}
 	
+	//Para eliminar un nuevo elemento en la lista
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.ACCEPTED)
-	public void deleteTarifa(@PathVariable(name = "id") Long id) {
+	public void removeTarifa(@PathVariable(name = "id") Long id) {
 		repository.deleteById(id);
 	}
 	
+	 //Para actualizar/ cambiar datos de un elemento
 	@PutMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.ACCEPTED)
-	public Tarifa updateTarifa(@PathVariable(name = "id")Long id, 
+	public Tarifa giveAndtakeTarifa(@PathVariable(name = "id")Long id, 
 			@RequestBody Tarifa tarifa) {
 		Optional<Tarifa> oTarifa = repository.findById(id);
 		if(oTarifa.isPresent()) {
-			Tarifa actual = oTarifa.get();
-			actual.setId(id);
-			actual.setName(tarifa.getName());
-			actual.setDesc(tarifa.getDesc());
-			actual.setPrice(tarifa.getPrice());
-			actual.setcDate(tarifa.getcDate());
-			Tarifa updatedRate = repository.save(actual);
-			return updatedRate;
+			Tarifa latest = oTarifa.get();
+			latest.setId(id);
+			latest.setName(tarifa.getName());
+			latest.setDesc(tarifa.getDesc());
+			latest.setPrice(tarifa.getPrice());
+			latest.setcDate(tarifa.getcDate());
+			Tarifa giveAndtakedRate = repository.save(latest);
+			return giveAndtakedRate;
 		}
 		return null;
 	}

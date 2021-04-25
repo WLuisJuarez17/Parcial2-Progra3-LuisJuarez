@@ -1,10 +1,7 @@
 package com.example.demo.controlc;
+
 import java.util.Collection;
-
-
-
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-
 import com.example.demo.entityc.Pago;
 import com.example.demo.repositoryc.PayRepository;
 
+//Se crea el controlador
 @RestController
 @RequestMapping(value = "pagos")
 public class PayControl {
@@ -28,51 +24,56 @@ public class PayControl {
 	@Autowired
 	PayRepository repository;
 	
+	//Para poder mostrar la lista
 	@GetMapping
 	@ResponseStatus(code = HttpStatus.OK)
-	public Collection<Pago> getListaPagos(){
-		 Iterable<Pago> listaPagos = repository.findAll();
-		return (Collection<Pago>) listaPagos;
+	public Collection<Pago> getListPagos(){
+		 Iterable<Pago> listPagos = repository.findAll();
+		return (Collection<Pago>) listPagos;
 	}
 	
+	//Para poder mostrar un elemento en especifico de la lista
 	@GetMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public Pago getPago(@PathVariable(name = "id") Long id) {
+	public Pago getOnePago(@PathVariable(name = "id") Long id) {
 		Optional<Pago> pago = repository.findById(id);
-		Pago result = null;
+		Pago last = null;
 		if(pago.isPresent()) {
-			result = pago.get();
+			last = pago.get();
 		}
-		return result;
+		return last;
 	}
 	
+	//Para crer un nuevo elemento en la lista
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Pago createPago(@RequestBody Pago pago) {
-		Pago nuevoPago = repository.save(pago);
-		return nuevoPago;
+	public Pago addPago(@RequestBody Pago pago) {
+		Pago newPago = repository.save(pago);
+		return newPago;
 	}
 	
+	//Para eleiminar un elemento de la lista
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.ACCEPTED)
-	public void deletePago(@PathVariable(name = "id") Long id) {
+	public void removePago(@PathVariable(name = "id") Long id) {
 		repository.deleteById(id);
 	}
 	
+	 //Para actualizar/ cambiar datos de un elemento
 	@PutMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.ACCEPTED)
-	public Pago updatePago(@PathVariable(name = "id")Long id, 
+	public Pago giveAndtakePago(@PathVariable(name = "id")Long id, 
 			@RequestBody Pago pago) {
 		Optional<Pago> oPago = repository.findById(id);
 		if(oPago.isPresent()) {
-			Pago actual = oPago.get();
-			actual.setId(id);
-			actual.setDate(pago.getDate());
-			actual.setAmount(pago.getAmount());
-			actual.setCardnum(pago.getCardnum());
-			actual.setState(pago.getState());
-			Pago updatedRate = repository.save(actual);
-			return updatedRate;
+			Pago latest = oPago.get();
+			latest.setId(id);
+			latest.setDate(pago.getDate());
+			latest.setAmount(pago.getAmount());
+			latest.setCardnum(pago.getCardnum());
+			latest.setState(pago.getState());
+			Pago giveAndtakedPago = repository.save(latest);
+			return giveAndtakedPago;
 		}
 		return null;
 	}
